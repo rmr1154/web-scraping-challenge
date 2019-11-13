@@ -66,9 +66,10 @@ def scrape():
     html = browser.html
     soup = BeautifulSoup(html, 'html.parser')
 
-    tag = soup.find('p', class_="TweetTextSize").text
-
-    mars_weather = tag
+    tag = soup.find('p', class_="TweetTextSize")
+    tag.a.decompose()
+    
+    mars_weather = tag.text
     #print(mars_weather)
 
     latest_news['mars_weather'] = mars_weather
@@ -82,8 +83,9 @@ def scrape():
     tables = pd.read_html(url)
     tables = tables[0]
     tables.columns=['Fact','Value']
+    tables.set_index('Fact',inplace=True)
 
-    mars_facts = tables.to_html()
+    mars_facts = tables.to_html(bold_rows=True, index=True, index_names=False)
     #tables
 
     latest_news['mars_facts'] = mars_facts
