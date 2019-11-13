@@ -8,10 +8,7 @@ app = Flask(__name__)
 app.config["MONGO_URI"] = "mongodb://localhost:27017/mars_news"
 mongo = PyMongo(app)
 
-# Or set inline
-# mongo = PyMongo(app, uri="mongodb://localhost:27017/craigslist_app")
-
-
+# Build our routes
 @app.route("/")
 def index():
         latest_news = mongo.db.latest_news.find_one()
@@ -23,8 +20,6 @@ def index():
         ,mars_facts = latest_news.mars_facts
         ,img_list = latest_news.hemisphere_image_urls)
         '''
-
-
 
 @app.route("/scrape")
 def scraper():
