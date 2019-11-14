@@ -12,14 +12,19 @@ mongo = PyMongo(app)
 @app.route("/")
 def index():
         latest_news = mongo.db.latest_news.find_one()
-        return render_template("index.html", latest_news=latest_news)
-        '''news_title=latest_news.news_title
-        ,news_p = latest_news.news_p
-        ,featured_image_url = latest_news.featured_image_url
-        ,mars_weather = latest_news.mars_weather
-        ,mars_facts = latest_news.mars_facts
-        ,img_list = latest_news.hemisphere_image_urls)
-        '''
+        if latest_news is None:
+            return render_template("index_blank.html")
+        else:
+            return render_template("index.html"
+            ,news_title=latest_news["news_title"]
+            ,news_p = latest_news["news_p"]
+            ,featured_image_url = latest_news["featured_image_url"]
+            ,mars_weather = latest_news["mars_weather"]
+            ,mars_facts = latest_news["mars_facts"]
+            ,hemi_list = latest_news["hemisphere_image_urls"])
+            '''
+            , latest_news=latest_news
+            '''
 
 @app.route("/scrape")
 def scraper():
